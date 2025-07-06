@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.travel.itinerary</groupId>
-	<artifactId>travel</artifactId>
+	<artifactId>travel-itinerary-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>travel</name>
 	<description>Ai Powered Travel Itinerary Application</description>

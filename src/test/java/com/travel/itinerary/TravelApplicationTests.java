@@ -1,4 +1,4 @@
-package com.travel.itinerary.travel;
+package com.travel.itinerary;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
