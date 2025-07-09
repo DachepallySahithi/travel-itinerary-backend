@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final JwtHelper jwtHelper;
 
     public AuthResponse signUp(SignUpRequest signUpRequest) {
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
@@ -29,7 +30,7 @@ public class UserService {
                 .lastName(signUpRequest.getLastName())
                 .phoneNumber(signUpRequest.getPhoneNumber()).build();
         User savedUser = userRepository.save(user);
-        String token = "";
+        String token = jwtHelper.generateToken(savedUser.getUsername());
         return new AuthResponse(
                 token,
                 "Bearer",
@@ -46,7 +47,7 @@ public class UserService {
         User user = userRepository.findByUsername(loginRequest.getUserName()).orElse(null);
         if (user == null)
             throw new BadRequestException("User with username does not exist");
-        String token = "";
+        String token = jwtHelper.generateToken(user.getUsername());
         return new AuthResponse(
                 token,
                 "Bearer",
