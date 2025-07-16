@@ -26,7 +26,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final List<String> publicEndpoints = Arrays.asList(
             "/api/token/generate",
             "/api/auth/signup",
-            "/api/auth/login"
+            "/api/auth/login",
+            "/api/mail/send"
     );
 
     public JwtAuthFilter(JwtHelper jwtHelper, UserDetailsService userDetailsService) {
@@ -74,7 +75,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
 
-                    // Store the validated username in request attributes for controllers to access
                     request.setAttribute("authenticatedUsername", username);
                 } else {
                     sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "Invalid or expired token");
