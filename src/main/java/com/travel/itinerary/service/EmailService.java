@@ -29,7 +29,8 @@ public class EmailService {
             if (emailRequest.getBcc() != null && !emailRequest.getBcc().trim().isEmpty()) {
                 message.setBcc(emailRequest.getBcc());
             }
-
+            message.setText(emailRequest.getMessage());
+            message.setSubject(emailRequest.getSubject());
             mailSender.send(message);
         } catch (Exception e) {
             throw new RuntimeException("Failed to send email: " + e.getMessage(), e);

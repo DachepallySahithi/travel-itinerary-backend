@@ -56,6 +56,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/token/**").permitAll()  // Token generation (no JWT required)
                         .requestMatchers("/api/auth/signup").permitAll()  // Signup (no JWT required)
                         .requestMatchers("/api/auth/login").permitAll()  // Login (no JWT required)
+                        .requestMatchers("/api/mail/send").permitAll()
                         .anyRequest().authenticated()  // All other endpoints require JWT
                 )
                 .authenticationProvider(authenticationProvider())
