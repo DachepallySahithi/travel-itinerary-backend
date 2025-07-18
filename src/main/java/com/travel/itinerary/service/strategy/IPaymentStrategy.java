@@ -1,5 +1,8 @@
 package com.travel.itinerary.service.strategy;
 
+import com.travel.itinerary.dto.PaymentRequest;
+import com.travel.itinerary.dto.PaymentResponse;
+
 public interface IPaymentStrategy {
-    public boolean pay();
+    PaymentResponse processPayment(PaymentRequest paymentRequest);
 }
