@@ -6,21 +6,29 @@ import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 import com.travel.itinerary.dto.PaymentRequest;
 import com.travel.itinerary.dto.PaymentResponse;
+import com.travel.itinerary.model.entity.Payment;
+import com.travel.itinerary.model.entity.User;
+import com.travel.itinerary.repository.PaymentRepository;
+import com.travel.itinerary.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
 @Slf4j
 @Component
-public class ApiGateWayPayments implements IPaymentStrategy{
+@RequiredArgsConstructor
+public class ApiGateWayPayments implements IPaymentStrategy {
 
-    @Value("${stripe.secret.key}")
-    private String stripeSecretKey;
+    private final PaymentRepository paymentRepository;
+    private final UserRepository userRepository;
+
+    private String stripeSecretKey="51RmDfrR8VqWOB9kdJsBMEOPfkYvozINMKfoSOQiHMxlLfBVKhFhCLHSN68bXLVSUyndHQyB28T4EvBuLvi3TdQIb00jSUz2SZP";
 
     @Override
-    public PaymentResponse processPayment(PaymentRequest paymentRequest) {
+    public PaymentResponse processPayment(PaymentRequest paymentRequest, String userName) {
         try {
             log.info("Stripe secret key loaded: {}", stripeSecretKey != null ? "****" + stripeSecretKey.substring(stripeSecretKey.length() - 4) : "NULL");
             if (stripeSecretKey == null || stripeSecretKey.trim().isEmpty()) {
@@ -46,6 +54,8 @@ public class ApiGateWayPayments implements IPaymentStrategy{
 
             log.info("Payment processed successfully. Payment Intent ID: {}", paymentIntent.getId());
 
+            savePayment(paymentRequest, userName);
+
             return PaymentResponse.builder()
                     .paymentId(paymentIntent.getId())
                     .status(paymentIntent.getStatus())
@@ -63,6 +73,28 @@ public class ApiGateWayPayments implements IPaymentStrategy{
         } catch (Exception e) {
             log.error("Payment processing failed: {}", e.getMessage());
             return PaymentResponse.failed("Payment processing failed: " + e.getMessage());
+        }
+    }
+
+    private void savePayment(PaymentRequest paymentRequest, String userName) throws BadRequestException {
+        try {
+            int x=0;
+            int y=1;
+            System.out.println(y/x);
+            User user = userRepository.findByUsername(userName).orElse(null);
+            if (user == null)
+                throw new BadRequestException();
+            Payment payment = new Payment();
+            payment.setPaymentMethodId(paymentRequest.getPaymentMethodId());
+            payment.setPaymentType(paymentRequest.getPaymentType());
+            payment.setUser(user);
+            payment.setAmount(paymentRequest.getAmount());
+            payment.setCurrency(paymentRequest.getCurrency());
+            payment.setSubscriptionPlan(paymentRequest.getSubscriptionPlan());
+            paymentRepository.save(payment);
+        }catch (Exception e)
+        {
+            System.out.println(e.getStackTrace());
         }
     }
 }
