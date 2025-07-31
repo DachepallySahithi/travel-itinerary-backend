@@ -40,6 +40,7 @@ public class ItineraryService {
                 .build();
 
         Itinerary savedItinerary = itineraryRepository.save(itinerary);
+        sendEmail(user, request);
         return mapToResponse(savedItinerary);
     }
 
@@ -72,7 +73,7 @@ public class ItineraryService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         String processedSearchTerm = textProcessingService.processText(searchTerm);
-        List<Itinerary> itineraries=itineraryRepository.findByUserOrderByCreatedAtDesc(user);
+        List<Itinerary> itineraries = itineraryRepository.findByUserOrderByCreatedAtDesc(user);
         return itineraries.stream().filter(itinerary -> {
             String processedDestination = textProcessingService.processText(itinerary.getDestination());
             String processedItinerary = textProcessingService.processText(itinerary.getFullItinerary());
@@ -109,7 +110,8 @@ public class ItineraryService {
                 .updatedAt(itinerary.getUpdatedAt())
                 .build();
     }
-    public void sendEmail(User user){
+
+    public void sendEmail(User user, ItineraryRequest request) {
         EmailRequest emailRequest = new EmailRequest();
         emailRequest.setMessage("Thank you for checking your travel itinerary with us! We hope the AI-powered recommendations have helped you plan your trip.\n" +
                 "\n" +
