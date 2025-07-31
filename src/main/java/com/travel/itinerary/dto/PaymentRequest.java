@@ -38,4 +38,5 @@ public class PaymentRequest {
     // Customer details
     private String customerEmail;
     private String customerName;
+    private String subscriptionPlan;
 }
