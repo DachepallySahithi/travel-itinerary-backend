@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/api/token")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class TokenController {
     private final UserService userService;
     Logger logger = Logger.getLogger(String.valueOf(TokenController.class));

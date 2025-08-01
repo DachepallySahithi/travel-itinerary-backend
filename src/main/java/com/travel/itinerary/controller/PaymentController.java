@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/payments")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class PaymentController {
 
     private final PaymentService paymentService;
     private final UserRepository userRepository;
 
-    @Value("${stripe.public.key}")
-    private String stripePublicKey;
+//    @Value("${stripe.public.key}")
+    private String stripePublicKey = "pk_test_51RmDfrR8VqWOB9kdWglaoJ5rMLJhyJnVLEzcLLJN3AiKCkOI9AH1MQYbogpqA3o8NEN5FtM5FosfjA0CroHdyvmr00BhGGynpM";
 
     private String getAuthenticatedUsername(HttpServletRequest request) {
         return (String) request.getAttribute("authenticatedUsername");
@@ -55,7 +55,7 @@ public class PaymentController {
 
             log.info("Processing payment request for user: {}", tokenUsername);
 
-            PaymentResponse response = paymentService.processPayment(paymentRequest);
+            PaymentResponse response = paymentService.processPayment(paymentRequest, tokenUsername);
 
             if (response.isSuccess()) {
                 return ResponseEntity.ok(ApiResponse.success("Payment processed successfully", response));

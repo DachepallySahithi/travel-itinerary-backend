@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class AuthController {
     private final UserService userService;
     Logger logger = Logger.getLogger(String.valueOf(AuthController.class));
