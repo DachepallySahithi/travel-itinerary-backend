@@ -25,7 +25,7 @@ public class ApiGateWayPayments implements IPaymentStrategy {
     private final PaymentRepository paymentRepository;
     private final UserRepository userRepository;
 
-    private String stripeSecretKey="51RmDfrR8VqWOB9kdJsBMEOPfkYvozINMKfoSOQiHMxlLfBVKhFhCLHSN68bXLVSUyndHQyB28T4EvBuLvi3TdQIb00jSUz2SZP";
+    private String stripeSecretKey="sk_test_51RmDfrR8VqWOB9kdJsBMEOPfkYvozINMKfoSOQiHMxlLfBVKhFhCLHSN68bXLVSUyndHQyB28T4EvBuLvi3TdQIb00jSUz2SZP";
 
     @Override
     public PaymentResponse processPayment(PaymentRequest paymentRequest, String userName) {
